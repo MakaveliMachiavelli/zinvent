@@ -1,0 +1,16 @@
+# Submodules
+design-system/
+projects/*/
+!.gitkeep
+
+# Python
+__pycache__
+*.pyc
+.pytest_cache
+
+# Node
+node_modules/
+*.log
+
+# Backups
+*.bak
