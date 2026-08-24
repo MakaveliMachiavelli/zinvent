@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zinvent UI Toolkit — 5 Production-Ready Reusable Components</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- daisyUI CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <!-- Google Fonts: Space Grotesk + Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Alpine.js -->
+  <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    :root {
+      --brand: #0f766e;
+      --brand-ink: #134e4a;
+      --brand-light: #ccfbf1;
+      --accent: #f59e0b;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --bg: #f8fafc;
+      --card: #ffffff;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      letter-spacing: -0.025em;
+    }
+
+    .btn-brand {
+      background-color: var(--brand);
+      color: #ffffff;
+      font-weight: 600;
+      border-radius: 0.75rem;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-brand:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -10px var(--brand);
+    }
+
+    .component-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .component-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px -12px rgba(15, 23, 42, 0.12);
+    }
+
+    [x-cloak] { display: none !important; }
+  </style>
+</head>
+<body class="min-h-screen py-12 px-4 md:px-8" x-data="toolkitHub()" x-init="initHub()">
+
+  <!-- Hub Header -->
+  <header class="max-w-6xl mx-auto text-center space-y-4 mb-12">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200/60"
+         style="background-color: var(--brand-light); color: var(--brand-ink);">
+      <i data-lucide="boxes" class="w-4 h-4"></i>
+      <span>Zinvent Developer Arsenal</span>
+    </div>
+    
+    <h1 class="text-4xl md:text-5xl font-bold font-heading text-slate-900">
+      Production-Ready Reusable UI Components
+    </h1>
+    
+    <p class="text-slate-600 max-w-2xl mx-auto text-sm md:text-base">
+      Drop-in HTML snippets built on the verified CDN stack: <strong class="text-slate-800">Tailwind + daisyUI + Space Grotesk + Alpine.js + Lucide + GSAP</strong>. Zero build step, 100% static &amp; copy-paste ready.
+    </p>
+
+    <!-- CDN Stack Pills -->
+    <div class="flex flex-wrap justify-center items-center gap-2 pt-2 text-xs">
+      <span class="bg-white border border-slate-200 px-3 py-1 rounded-xl text-slate-700 font-medium flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i> Tailwind CSS CDN</span>
+      <span class="bg-white border border-slate-200 px-3 py-1 rounded-xl text-slate-700 font-medium flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i> daisyUI 4.12</span>
+      <span class="bg-white border border-slate-200 px-3 py-1 rounded-xl text-slate-700 font-medium flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i> Space Grotesk + Inter</span>
+      <span class="bg-white border border-slate-200 px-3 py-1 rounded-xl text-slate-700 font-medium flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i> Alpine.js v3</span>
+      <span class="bg-white border border-slate-200 px-3 py-1 rounded-xl text-slate-700 font-medium flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i> Lucide Icons</span>
+      <span class="bg-white border border-slate-200 px-3 py-1 rounded-xl text-slate-700 font-medium flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i> GSAP 3.12</span>
+    </div>
+  </header>
+
+  <!-- Component Directory Grid (5 Components) -->
+  <main class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <!-- 1. Branded Pricing Card -->
+    <div class="component-card card bg-white rounded-3xl border border-slate-200 p-6 flex flex-col justify-between shadow-sm">
+      <div class="space-y-3">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold"
+             style="background-color: var(--brand-light); color: var(--brand-ink);">
+          <i data-lucide="tag" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">Monetization</span>
+          <h3 class="font-heading font-bold text-xl text-slate-900 mt-1">1. Branded Pricing Card</h3>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Tiered 3-card pricing grid with One-Time Lifetime vs SaaS toggle, PHP (₱) / USD ($) switcher, feature checklist, highlight badges, and guarantee ribbons.
+        </p>
+        <div class="text-[11px] font-mono bg-slate-50 p-2 rounded-xl border border-slate-100 text-slate-600">
+          toolkit/components/branded-pricing-card.html
+        </div>
+      </div>
+      <div class="pt-6">
+        <a href="branded-pricing-card.html" class="btn-brand w-full py-2.5 text-xs font-bold text-center block shadow-sm">
+          Open Demo &amp; Code →
+        </a>
+      </div>
+    </div>
+
+    <!-- 2. Multi-Step Wizard -->
+    <div class="component-card card bg-white rounded-3xl border border-slate-200 p-6 flex flex-col justify-between shadow-sm">
+      <div class="space-y-3">
+        <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
+          <i data-lucide="layers" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">Workflow UI</span>
+          <h3 class="font-heading font-bold text-xl text-slate-900 mt-1">2. Multi-Step Wizard</h3>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          4-step form wizard with animated progress track, dynamic line-item repeater, live tax/subtotal calculation, GSAP transitions, and validation guards.
+        </p>
+        <div class="text-[11px] font-mono bg-slate-50 p-2 rounded-xl border border-slate-100 text-slate-600">
+          toolkit/components/multi-step-wizard.html
+        </div>
+      </div>
+      <div class="pt-6">
+        <a href="multi-step-wizard.html" class="btn-brand w-full py-2.5 text-xs font-bold text-center block shadow-sm">
+          Open Demo &amp; Code →
+        </a>
+      </div>
+    </div>
+
+    <!-- 3. Results & Export Panel -->
+    <div class="component-card card bg-white rounded-3xl border border-slate-200 p-6 flex flex-col justify-between shadow-sm">
+      <div class="space-y-3">
+        <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-800 flex items-center justify-center font-bold">
+          <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full">Calculation &amp; Output</span>
+          <h3 class="font-heading font-bold text-xl text-slate-900 mt-1">3. Results &amp; Export Panel</h3>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          KPI summary metric cards, itemized data table with tabs, BIR 1701Q schedule, client-side CSV generator, clipboard copy, and print-ready PDF styling.
+        </p>
+        <div class="text-[11px] font-mono bg-slate-50 p-2 rounded-xl border border-slate-100 text-slate-600">
+          toolkit/components/results-export-panel.html
+        </div>
+      </div>
+      <div class="pt-6">
+        <a href="results-export-panel.html" class="btn-brand w-full py-2.5 text-xs font-bold text-center block shadow-sm">
+          Open Demo &amp; Code →
+        </a>
+      </div>
+    </div>
+
+    <!-- 4. GCash Payment Unlock Block -->
+    <div class="component-card card bg-white rounded-3xl border border-slate-200 p-6 flex flex-col justify-between shadow-sm">
+      <div class="space-y-3">
+        <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-800 flex items-center justify-center font-bold">
+          <i data-lucide="smartphone" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full">Philippine Micro-SaaS</span>
+          <h3 class="font-heading font-bold text-xl text-slate-900 mt-1">4. GCash Payment Block</h3>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          GCash-branded payment flow with QR display, 1-click mobile number copying, instant unlock code validator, localStorage persistence, and modal trigger.
+        </p>
+        <div class="text-[11px] font-mono bg-slate-50 p-2 rounded-xl border border-slate-100 text-slate-600">
+          toolkit/components/gcash-payment-unlock.html
+        </div>
+      </div>
+      <div class="pt-6">
+        <a href="gcash-payment-unlock.html" class="btn-brand w-full py-2.5 text-xs font-bold text-center block shadow-sm bg-blue-600 hover:bg-blue-700">
+          Open Demo &amp; Code →
+        </a>
+      </div>
+    </div>
+
+    <!-- 5. Testimonial & Social Proof Strip -->
+    <div class="component-card card bg-white rounded-3xl border border-slate-200 p-6 flex flex-col justify-between shadow-sm">
+      <div class="space-y-3">
+        <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-800 flex items-center justify-center font-bold">
+          <i data-lucide="message-square" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full">Conversion &amp; Trust</span>
+          <h3 class="font-heading font-bold text-xl text-slate-900 mt-1">5. Social Proof Strip</h3>
+        </div>
+        <p class="text-xs text-slate-600 leading-relaxed">
+          Testimonial cards with real persona reviews, filterable categories (Freelancers, Sellers, CPAs), trust badges, and an animated live activity ticker toast.
+        </p>
+        <div class="text-[11px] font-mono bg-slate-50 p-2 rounded-xl border border-slate-100 text-slate-600">
+          toolkit/components/testimonial-strip.html
+        </div>
+      </div>
+      <div class="pt-6">
+        <a href="testimonial-strip.html" class="btn-brand w-full py-2.5 text-xs font-bold text-center block shadow-sm">
+          Open Demo &amp; Code →
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Start Card -->
+    <div class="component-card card bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-6 flex flex-col justify-between shadow-lg">
+      <div class="space-y-3">
+        <div class="w-12 h-12 rounded-2xl bg-white/10 text-amber-400 flex items-center justify-center font-bold">
+          <i data-lucide="zap" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-full">Quick Start</span>
+          <h3 class="font-heading font-bold text-xl text-white mt-1">How to Use</h3>
+        </div>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Every file is standalone. Open any component HTML file, copy the block bounded by <code class="text-emerald-300 font-mono text-[11px]">&lt;!-- START OF REUSABLE COMPONENT --&gt;</code>, and paste it into your tool.
+        </p>
+      </div>
+      <div class="pt-6">
+        <a href="README.md" class="btn btn-outline border-white/30 text-white hover:bg-white hover:text-slate-900 w-full py-2.5 text-xs font-bold text-center block rounded-xl">
+          View README.md Guide →
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="max-w-6xl mx-auto text-center py-12 text-xs text-slate-400">
+    <p>Zinvent Toolkit · High-Conversion CDN Components · 2026</p>
+  </footer>
+
+  <script>
+    function toolkitHub() {
+      return {
+        initHub() {
+          this.$nextTick(() => {
+            if (window.lucide) lucide.createIcons();
+            if (window.gsap) {
+              gsap.from('.component-card', {
+                y: 20,
+                opacity: 0,
+                stagger: 0.08,
+                duration: 0.6,
+                ease: 'power2.out'
+              });
+            }
+          });
+        }
+      };
+    }
+  </script>
+</body>
+</html>

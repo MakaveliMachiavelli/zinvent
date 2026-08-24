@@ -1,0 +1,16 @@
+{
+  "name": "zinvent-test-utils",
+  "version": "1.0.0",
+  "description": "Shared test utilities for Zinvent products",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "vitest run",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "vitest": "^1.6.0",
+    "typescript": "^5.9.0"
+  }
+}

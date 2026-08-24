@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Component: Branded Pricing Card — Zinvent Toolkit</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- daisyUI CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <!-- Google Fonts: Space Grotesk (headings/brand/numbers) + Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Alpine.js for lightweight reactivity -->
+  <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- GSAP for micro-animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    :root {
+      --brand: #0f766e;        /* Deep Emerald */
+      --brand-ink: #134e4a;
+      --brand-light: #ccfbf1;
+      --accent: #f59e0b;       /* Warm Amber */
+      --ink: #0f172a;          /* Slate 900 */
+      --muted: #64748b;        /* Slate 500 */
+      --line: #e2e8f0;         /* Slate 200 */
+      --bg: #f8fafc;           /* Slate 50 */
+      --card: #ffffff;
+    }
+
+    /* Color Theme Presets */
+    .theme-emerald {
+      --brand: #0f766e; --brand-ink: #134e4a; --brand-light: #ccfbf1; --accent: #f59e0b;
+    }
+    .theme-indigo {
+      --brand: #4f46e5; --brand-ink: #312e81; --brand-light: #e0e7ff; --accent: #ec4899;
+    }
+    .theme-amber {
+      --brand: #d97706; --brand-ink: #78350f; --brand-light: #fef3c7; --accent: #0284c7;
+    }
+    .theme-slate {
+      --brand: #334155; --brand-ink: #0f172a; --brand-light: #f1f5f9; --accent: #f43f5e;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, .font-heading, .price-display {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      letter-spacing: -0.025em;
+    }
+
+    .btn-brand {
+      background-color: var(--brand);
+      color: #ffffff;
+      font-weight: 600;
+      border-radius: 0.75rem;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-brand:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -10px var(--brand);
+    }
+
+    .glow-card {
+      position: relative;
+    }
+    .glow-card::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, var(--brand), var(--accent));
+      border-radius: 1.6rem;
+      z-index: -1;
+      opacity: 0.9;
+    }
+
+    [x-cloak] { display: none !important; }
+  </style>
+</head>
+<body class="min-h-screen py-10 px-4 md:px-8 theme-emerald"
+      x-data="pricingComponent()"
+      x-init="initComponent()">
+
+  <!-- DEMO TOOLBAR: Configurator for testing -->
+  <div class="max-w-6xl mx-auto mb-10 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-teal-800 text-white flex items-center justify-center font-bold text-sm font-heading">Z</div>
+      <div>
+        <h4 class="font-heading font-bold text-slate-800 text-sm">Zinvent Toolkit · Standalone Component</h4>
+        <p class="text-xs text-slate-500">File: <code class="bg-slate-100 px-1 py-0.5 rounded text-teal-700 font-mono">toolkit/components/branded-pricing-card.html</code></p>
+      </div>
+    </div>
+    <div class="flex flex-wrap items-center gap-3 text-xs font-medium">
+      <!-- Theme Switcher -->
+      <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
+        <span class="text-slate-500 pl-2">Theme:</span>
+        <button @click="setTheme('theme-emerald')" :class="theme === 'theme-emerald' ? 'bg-white shadow text-teal-800 font-bold' : 'text-slate-600'" class="px-2.5 py-1 rounded-lg transition">Emerald</button>
+        <button @click="setTheme('theme-indigo')" :class="theme === 'theme-indigo' ? 'bg-white shadow text-indigo-700 font-bold' : 'text-slate-600'" class="px-2.5 py-1 rounded-lg transition">Indigo</button>
+        <button @click="setTheme('theme-amber')" :class="theme === 'theme-amber' ? 'bg-white shadow text-amber-700 font-bold' : 'text-slate-600'" class="px-2.5 py-1 rounded-lg transition">Amber</button>
+        <button @click="setTheme('theme-slate')" :class="theme === 'theme-slate' ? 'bg-white shadow text-slate-800 font-bold' : 'text-slate-600'" class="px-2.5 py-1 rounded-lg transition">Slate</button>
+      </div>
+      <!-- Currency Switcher -->
+      <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
+        <button @click="currency = 'PHP'" :class="currency === 'PHP' ? 'bg-white shadow text-slate-900 font-bold' : 'text-slate-600'" class="px-2.5 py-1 rounded-lg transition">₱ PHP</button>
+        <button @click="currency = 'USD'" :class="currency === 'USD' ? 'bg-white shadow text-slate-900 font-bold' : 'text-slate-600'" class="px-2.5 py-1 rounded-lg transition">$ USD</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- START OF REUSABLE COMPONENT: BRANDED PRICING CARD                         -->
+  <!-- ========================================================================= -->
+
+  <section class="max-w-6xl mx-auto py-8" id="pricing-section">
+    
+    <!-- Section Header -->
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-3"
+           style="background-color: var(--brand-light); color: var(--brand-ink);">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+        <span>Simple, Transparent Pricing</span>
+      </div>
+      <h2 class="text-3xl md:text-4xl font-bold mb-3 text-slate-900">
+        Invest in your workflow once.<br class="hidden sm:inline" /> Keep the benefits forever.
+      </h2>
+      <p class="text-slate-600 text-sm md:text-base">
+        No hidden recurring fees, no surprise billings. Built for solo creators, freelancers, and growing operations.
+      </p>
+
+      <!-- Billing Toggle (One-Time vs Annual Support Option) -->
+      <div class="mt-6 inline-flex items-center p-1.5 bg-slate-200/70 rounded-2xl border border-slate-300/60">
+        <button type="button"
+                @click="setBillingType('lifetime')"
+                :class="billingType === 'lifetime' ? 'bg-white text-slate-900 shadow-sm font-semibold' : 'text-slate-600 hover:text-slate-900'"
+                class="px-4 py-2 rounded-xl text-xs md:text-sm transition-all duration-150 flex items-center gap-1.5">
+          <i data-lucide="zap" class="w-4 h-4 text-amber-500"></i>
+          <span>Lifetime Access</span>
+          <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded-md uppercase">Popular</span>
+        </button>
+        <button type="button"
+                @click="setBillingType('subscription')"
+                :class="billingType === 'subscription' ? 'bg-white text-slate-900 shadow-sm font-semibold' : 'text-slate-600 hover:text-slate-900'"
+                class="px-4 py-2 rounded-xl text-xs md:text-sm transition-all duration-150 flex items-center gap-1.5">
+          <i data-lucide="calendar" class="w-4 h-4 text-slate-400"></i>
+          <span>Annual / SaaS Mode</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Pricing Grid (3 Cards) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+
+      <!-- ================= CARD 1: STARTER / FREE ================= -->
+      <div class="pricing-card card bg-white border border-slate-200 rounded-3xl p-6 md:p-8 flex flex-col justify-between hover:shadow-md transition-shadow">
+        <div>
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h3 class="font-heading font-bold text-xl text-slate-900">Starter Free</h3>
+              <p class="text-xs text-slate-500 mt-1">Core calculation tools for individuals</p>
+            </div>
+            <span class="badge badge-ghost text-xs font-semibold px-2.5 py-1">Free Forever</span>
+          </div>
+
+          <!-- Price Display -->
+          <div class="my-6 pb-6 border-b border-slate-100">
+            <div class="flex items-baseline gap-1">
+              <span class="text-3xl md:text-4xl font-bold font-heading text-slate-900" x-text="currency === 'PHP' ? '₱0' : '$0'">₱0</span>
+              <span class="text-xs text-slate-500 font-medium">/ forever</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-2">No credit card or signup required. Just open and compute.</p>
+          </div>
+
+          <!-- Feature List -->
+          <ul class="space-y-3 text-xs md:text-sm text-slate-600">
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+              <span>Full access to standard calculation engine</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+              <span>Basic browser print / single-page export</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+              <span>100% Client-side privacy (no server storage)</span>
+            </li>
+            <li class="flex items-start gap-2.5 text-slate-400">
+              <i data-lucide="x" class="w-4 h-4 text-slate-300 shrink-0 mt-0.5"></i>
+              <span>No custom branding / white-label watermark</span>
+            </li>
+            <li class="flex items-start gap-2.5 text-slate-400">
+              <i data-lucide="x" class="w-4 h-4 text-slate-300 shrink-0 mt-0.5"></i>
+              <span>No CSV / Excel batch spreadsheet export</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mt-8 pt-4">
+          <button type="button"
+                  @click="handleSelectPlan('free')"
+                  class="w-full py-3 px-4 rounded-xl border border-slate-300 text-slate-700 font-semibold text-xs md:text-sm hover:bg-slate-50 transition">
+            Use Free Version
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= CARD 2: PRO (FEATURED HERO CARD) ================= -->
+      <div class="pricing-card card bg-white rounded-3xl p-6 md:p-8 flex flex-col justify-between shadow-xl relative glow-card scale-100 lg:-translate-y-2"
+           style="border: 2px solid var(--brand);">
+        
+        <!-- Floating Highlight Badge -->
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 font-bold text-[11px] uppercase tracking-wider px-4 py-1 rounded-full shadow-md flex items-center gap-1.5">
+          <i data-lucide="flame" class="w-3.5 h-3.5 fill-current"></i>
+          <span>Most Popular · Best Value</span>
+        </div>
+
+        <div>
+          <div class="flex justify-between items-start mb-4 pt-1">
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="font-heading font-bold text-2xl text-slate-900">PRO License</h3>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide"
+                      style="background-color: var(--brand-light); color: var(--brand-ink);">
+                  Lifetime
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 mt-1">Unlock all professional exports & automation</p>
+            </div>
+          </div>
+
+          <!-- Price Display -->
+          <div class="my-6 pb-6 border-b border-slate-100">
+            <div class="flex items-baseline gap-2">
+              <span class="text-sm md:text-base text-slate-400 line-through font-heading font-medium"
+                    x-text="getOriginalPrice('pro')">₱499</span>
+              <span class="text-4xl md:text-5xl font-bold font-heading text-slate-900"
+                    x-text="getPrice('pro')">₱199</span>
+              <span class="text-xs text-slate-500 font-medium"
+                    x-text="billingType === 'lifetime' ? 'one-time payment' : '/ month'">one-time payment</span>
+            </div>
+            <p class="text-xs font-medium mt-2 flex items-center gap-1"
+               style="color: var(--brand);">
+              <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+              <span>Pay once via GCash / Card. No monthly charges.</span>
+            </p>
+          </div>
+
+          <!-- Feature List -->
+          <ul class="space-y-3.5 text-xs md:text-sm text-slate-700">
+            <li class="flex items-start gap-2.5 font-medium">
+              <div class="p-0.5 rounded shrink-0 mt-0.5" style="background-color: var(--brand-light); color: var(--brand);">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              </div>
+              <span><strong>Unlimited CSV & Excel</strong> batch downloads</span>
+            </li>
+            <li class="flex items-start gap-2.5 font-medium">
+              <div class="p-0.5 rounded shrink-0 mt-0.5" style="background-color: var(--brand-light); color: var(--brand);">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              </div>
+              <span><strong>Clean PDF generation</strong> (No watermark, BIR/EOPT compliant)</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <div class="p-0.5 rounded shrink-0 mt-0.5" style="background-color: var(--brand-light); color: var(--brand);">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              </div>
+              <span><strong>Saved client directory & profiles</strong> (Auto-fill)</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <div class="p-0.5 rounded shrink-0 mt-0.5" style="background-color: var(--brand-light); color: var(--brand);">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              </div>
+              <span><strong>Auto-sequence numbering</strong> & sales book registry</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <div class="p-0.5 rounded shrink-0 mt-0.5" style="background-color: var(--brand-light); color: var(--brand);">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              </div>
+              <span><strong>Free lifetime updates</strong> for new tax rates & rules</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mt-8 pt-4">
+          <button type="button"
+                  @click="handleSelectPlan('pro')"
+                  class="btn-brand w-full py-3.5 px-4 text-sm md:text-base font-bold shadow-lg flex items-center justify-center gap-2">
+            <i data-lucide="unlock" class="w-4 h-4"></i>
+            <span>Unlock PRO Now</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+          </button>
+          <div class="flex items-center justify-center gap-3 text-[11px] text-slate-500 mt-3 font-medium">
+            <span class="flex items-center gap-1"><i data-lucide="shield-check" class="w-3 h-3 text-emerald-600"></i> Instant activation</span>
+            <span>·</span>
+            <span class="flex items-center gap-1"><i data-lucide="smartphone" class="w-3 h-3 text-blue-600"></i> GCash & Maya ready</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= CARD 3: TEAM / AGENCY ================= -->
+      <div class="pricing-card card bg-white border border-slate-200 rounded-3xl p-6 md:p-8 flex flex-col justify-between hover:shadow-md transition-shadow">
+        <div>
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <h3 class="font-heading font-bold text-xl text-slate-900">Commercial</h3>
+              <p class="text-xs text-slate-500 mt-1">For bookkeeping firms, agencies & teams</p>
+            </div>
+            <span class="badge badge-outline text-xs font-semibold px-2.5 py-1 text-slate-600">Multi-seat</span>
+          </div>
+
+          <!-- Price Display -->
+          <div class="my-6 pb-6 border-b border-slate-100">
+            <div class="flex items-baseline gap-2">
+              <span class="text-sm md:text-base text-slate-400 line-through font-heading font-medium"
+                    x-text="getOriginalPrice('team')">₱1,299</span>
+              <span class="text-3xl md:text-4xl font-bold font-heading text-slate-900"
+                    x-text="getPrice('team')">₱599</span>
+              <span class="text-xs text-slate-500 font-medium"
+                    x-text="billingType === 'lifetime' ? 'one-time' : '/ month'">one-time</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-2">Up to 5 team members / multi-workstation unlock keys.</p>
+          </div>
+
+          <!-- Feature List -->
+          <ul class="space-y-3 text-xs md:text-sm text-slate-600">
+            <li class="flex items-start gap-2.5 font-medium text-slate-800">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+              <span><strong>Everything in PRO</strong> included</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+              <span><strong>5 Standalone activation codes</strong> for staff</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+              <span><strong>Custom header / logo branding</strong> injection</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+              <span>Commercial client re-use license</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+              <span>Priority email support & feature requests</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mt-8 pt-4">
+          <button type="button"
+                  @click="handleSelectPlan('team')"
+                  class="w-full py-3 px-4 rounded-xl border border-slate-300 text-slate-700 font-semibold text-xs md:text-sm hover:bg-slate-50 transition">
+            Get Commercial Pack
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Trust & Guarantee Ribbon -->
+    <div class="mt-10 p-4 rounded-2xl bg-white border border-slate-200/80 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+             style="background-color: var(--brand-light); color: var(--brand-ink);">
+          <i data-lucide="shield-check" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h4 class="font-heading font-bold text-slate-800 text-sm">30-Day Money Back Guarantee</h4>
+          <p class="text-xs text-slate-500">If our tool doesn't save you hours of manual computation, message us for a full refund.</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3 text-xs font-semibold text-slate-600">
+        <span class="flex items-center gap-1"><i data-lucide="lock" class="w-3.5 h-3.5 text-slate-400"></i> SSL Encrypted</span>
+        <span>•</span>
+        <span class="flex items-center gap-1"><i data-lucide="file-check" class="w-3.5 h-3.5 text-emerald-600"></i> Instant Unlock Code</span>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- END OF REUSABLE COMPONENT: BRANDED PRICING CARD                           -->
+  <!-- ========================================================================= -->
+
+  <!-- Feedback Modal for Demo Trigger -->
+  <dialog id="pricingDemoModal" class="modal">
+    <div class="modal-box rounded-3xl bg-white p-6 max-w-md">
+      <h3 class="font-heading font-bold text-xl text-slate-900 flex items-center gap-2">
+        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i>
+        <span>Plan Selected</span>
+      </h3>
+      <p class="py-3 text-sm text-slate-600">
+        You triggered the checkout flow for <span class="font-bold text-slate-900" x-text="selectedPlanName"></span> at <span class="font-bold text-emerald-700 font-heading" x-text="selectedPlanPrice"></span>.
+      </p>
+      <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-1">
+        <p><strong>Developer integration:</strong></p>
+        <p>Connect this button to your GCash modal (e.g. <code class="text-teal-700">#payModal</code>) or payment gateway.</p>
+      </div>
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn btn-sm btn-ghost">Close</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    function pricingComponent() {
+      return {
+        theme: 'theme-emerald',
+        currency: 'PHP',
+        billingType: 'lifetime', // 'lifetime' or 'subscription'
+        selectedPlanName: 'PRO License',
+        selectedPlanPrice: '₱199',
+
+        initComponent() {
+          this.$nextTick(() => {
+            if (window.lucide) lucide.createIcons();
+            if (window.gsap) {
+              gsap.from('.pricing-card', {
+                y: 24,
+                opacity: 0,
+                stagger: 0.12,
+                duration: 0.7,
+                ease: 'power2.out'
+              });
+            }
+          });
+        },
+
+        setTheme(t) {
+          this.theme = t;
+          document.body.className = `min-h-screen py-10 px-4 md:px-8 ${t}`;
+        },
+
+        setBillingType(type) {
+          this.billingType = type;
+          this.$nextTick(() => { if (window.lucide) lucide.createIcons(); });
+        },
+
+        getPrice(tier) {
+          if (this.currency === 'PHP') {
+            if (tier === 'pro') return this.billingType === 'lifetime' ? '₱199' : '₱69';
+            if (tier === 'team') return this.billingType === 'lifetime' ? '₱599' : '₱199';
+            return '₱0';
+          } else {
+            if (tier === 'pro') return this.billingType === 'lifetime' ? '$9.99' : '$3.99';
+            if (tier === 'team') return this.billingType === 'lifetime' ? '$29.99' : '$9.99';
+            return '$0';
+          }
+        },
+
+        getOriginalPrice(tier) {
+          if (this.currency === 'PHP') {
+            if (tier === 'pro') return this.billingType === 'lifetime' ? '₱499' : '₱149';
+            if (tier === 'team') return this.billingType === 'lifetime' ? '₱1,299' : '₱399';
+            return '';
+          } else {
+            if (tier === 'pro') return this.billingType === 'lifetime' ? '$24.99' : '$7.99';
+            if (tier === 'team') return this.billingType === 'lifetime' ? '$59.99' : '$19.99';
+            return '';
+          }
+        },
+
+        handleSelectPlan(tier) {
+          const names = { free: 'Starter Free', pro: 'PRO Lifetime License', team: 'Commercial Agency Pack' };
+          this.selectedPlanName = names[tier];
+          this.selectedPlanPrice = this.getPrice(tier);
+
+          const payModal = document.getElementById('payModal');
+          if (payModal && tier !== 'free') {
+            payModal.classList.remove('hidden');
+          } else {
+            const demoModal = document.getElementById('pricingDemoModal');
+            if (demoModal) demoModal.showModal();
+          }
+        }
+      };
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{PRODUCT} — {TAGLINE}</title>
+<meta name="description" content="{ONE_LINE_VALUE}" />
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/daisyUI@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+  :root{
+    --brand:#0f766e; --brand-ink:#134e4a; --accent:#f59e0b; --ink:#101828; --muted:#667085; --line:#e4e7ec; --bg:#f6f8fb; --card:#fff;
+  }
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  h1,h2,h3,.brand{font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em}
+  .brand{font-weight:700;font-size:1.4rem}
+  .brand span{color:var(--brand)}
+  .btn-primary{background:var(--brand);color:#fff;font-weight:600;border-radius:12px;padding:.6rem 1.2rem;transition:transform .15s,box-shadow .15s}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 25px -10px var(--brand)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:1rem;box-shadow:0 1px 3px rgba(16,24,40,.06)}
+  [x-cloak]{display:none}
+</style>
+</head>
+<body x-data="{ init(){ lucide.createIcons(); gsap.from('.reveal',{y:20,opacity:0,stagger:.1,duration:.6}) } }">
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b" style="border-color:var(--line)">
+  <div class="max-w-6xl mx-auto px-5 py-3 flex justify-between items-center">
+    <div class="brand">{PRODUCT} <span>.</span></div>
+    <nav class="flex gap-4 items-center text-sm font-semibold" style="color:var(--muted)">
+      <a href="#features" class="hover:text-[var(--ink)]">Features</a>
+      <a href="#pricing" class="hover:text-[var(--ink)]">Pricing</a>
+      <button class="btn-primary" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})">Launch</button>
+    </nav>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-5 py-12">
+  <section class="text-center reveal py-8">
+    <h1 class="text-4xl md:text-5xl font-bold mb-3">{HEADLINE}</h1>
+    <p class="text-lg max-w-2xl mx-auto" style="color:var(--muted)">{SUBHEAD}</p>
+    <div class="mt-6 flex gap-3 justify-center">
+      <button class="btn-primary text-lg" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})">Start Free</button>
+    </div>
+  </section>
+
+  <section id="app" class="card p-6 md:p-8 my-10 reveal">
+    <!-- TOOL UI GOES HERE -->
+  </section>
+
+  <section id="features" class="grid md:grid-cols-3 gap-5 my-10">
+    <div class="card p-5 reveal"><i data-lucide="zap" class="w-6 h-6 mb-2" style="color:var(--brand)"></i><h3 class="font-bold mb-1">Fast</h3><p class="text-sm" style="color:var(--muted)">Works in your browser. No install.</p></div>
+    <div class="card p-5 reveal"><i data-lucide="shield" class="w-6 h-6 mb-2" style="color:var(--brand)"></i><h3 class="font-bold mb-1">Private</h3><p class="text-sm" style="color:var(--muted)">Data stays on your device.</p></div>
+    <div class="card p-5 reveal"><i data-lucide="check-circle" class="w-6 h-6 mb-2" style="color:var(--brand)"></i><h3 class="font-bold mb-1">Accurate</h3><p class="text-sm" style="color:var(--muted)">Validated against real cases.</p></div>
+  </section>
+
+  <section id="pricing" class="card p-6 text-center reveal my-10">
+    <h2 class="text-2xl font-bold mb-2">PRO — ₱{PRICE} one-time</h2>
+    <p class="text-sm mb-4" style="color:var(--muted)">Unlock export, save, and advanced features.</p>
+    <div class="inline-block p-4 bg-base-200 rounded-xl">
+      <p class="text-xs mb-1">Pay via GCash, then enter your code:</p>
+      <img src="assets/gcash-qr.svg" alt="GCash QR" class="w-40 mx-auto" />
+      <p class="text-xs mt-1" style="color:var(--muted)">Replace with Allen's real QR (PAYMENTS.md)</p>
+    </div>
+  </section>
+</main>
+
+<footer class="border-t py-6 text-center text-sm" style="color:var(--muted)">
+  <p>{PRODUCT} · <a href="https://makavelimachiavelli.github.io" class="hover:text-[var(--ink)]">More tools</a></p>
+</footer>
+</body>
+</html>

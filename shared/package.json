@@ -1,0 +1,35 @@
+{
+  "name": "zinvent-shared",
+  "version": "1.0.0",
+  "description": "Zinvent shared types, utilities, and build pipeline",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [
+    "zinvent",
+    "shared",
+    "types"
+  ],
+  "author": "Allen Olavidez",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MakaveliMachiavelli/zinvent-shared.git"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.1",
+    "typescript": "^5.9.3",
+    "vitest": "^1.6.1",
+    "zod": "^4.4.3"
+  }
+}
