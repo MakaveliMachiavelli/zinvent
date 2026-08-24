@@ -48,3 +48,13 @@ Low priority vs above but cheap win next pass.
 - tradejournalph formulas-lib full-model calc slow → structural checks cover it
 - Feature cards text-only (no icons) — polish only
 - Headless-chrome scrollbar artifact on TJ screenshots — not user-visible
+
+---
+## Resolution log (2026-08-24, evening)
+- B1 dead apps: FIXED all 15 (restore_apps.py), regression test added to test_js.cjs
+- B2 QR placeholders: created branded svgs; real-QR swap PARKED (Allen)
+- B3 og:image: deployed all 15 + hub
+- B4 hub 404: published via user Pages repo, verified 200
+- B5 legal pages: terms.html + privacy.html live on hub
+- B6 missing guides: utangplanph, commissionph, freelancerkitph guides created
+- Verification: link_crawl.py = 199 URLs, 0 dead; e2e_check.py = 12/12 OK; crons 1000/1000 ok
