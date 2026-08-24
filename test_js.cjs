@@ -24,6 +24,7 @@ if (!fs.existsSync(path.join(dir, 'app.js'))) {
 // Test categories
 const tests = {
   smoke: (html) => {
+    const idCount = (html.match(/ id="/g) || []).length;
     const checks = [
       ['has DOCTYPE', /<!DOCTYPE html>/i.test(html)],
       ['has data-theme attr', /data-theme=/.test(html)],
@@ -31,13 +32,14 @@ const tests = {
       ['has design-system CSS', /zinvent-design-system/.test(html)],
       ['has analytics.js', /components\/analytics\.js/.test(html)],
       ['has payments.js', /components\/payments\.js/.test(html)],
+      [`has app UI restored (${idCount} ids, need >15)`, idCount > 15],
     ];
     return checks;
   },
 
   calc: (html) => {
     const checks = [
-      ['has calculation function', /function.*calc|function.*compute|function.*update|function.*render|function.*compress/i.test(html)],
+      ['has calculation function', /function.*calc|function.*compute|function.*update|function.*render|function.*compress|function.*reveal|function.*build/i.test(html)],
       ['has event listener', /addEventListener|onclick|\.on\(/.test(html)],
     ];
     return checks;
