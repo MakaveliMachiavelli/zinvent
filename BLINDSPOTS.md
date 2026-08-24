@@ -58,3 +58,10 @@ Low priority vs above but cheap win next pass.
 - B5 legal pages: terms.html + privacy.html live on hub
 - B6 missing guides: utangplanph, commissionph, freelancerkitph guides created
 - Verification: link_crawl.py = 199 URLs, 0 dead; e2e_check.py = 12/12 OK; crons 1000/1000 ok
+
+## Local-AI Red Team Experiment (2026-08-24)
+Used gemma3:12b as free product critic:
+- Trust insight: PH freelancers value formula transparency + no aggressive upsells
+- Action: utangplanph got a "Paano kami nag-compute" section (avalanche/snowball math shown, limitations admitted)
+- ratecalcph already had formula section + See-the-Math button (AI false positive on truncated input)
+- Verdict: local models = viable free red-team for copy/trust audits; verify claims against actual page before acting
